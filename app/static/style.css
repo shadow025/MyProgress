@@ -43,6 +43,11 @@ body.tema-noche {
 }
 
 .topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
   padding: 1.25rem 1.5rem;
   border-bottom: 1px solid var(--border);
 }
@@ -50,6 +55,50 @@ body.tema-noche {
 .topbar h1 {
   margin: 0;
   font-size: 1.4rem;
+}
+
+.tabs-nav {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tab-btn {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: inherit;
+  border-radius: 999px;
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.tab-btn.active {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* ---- Pestanas (paginas) ---- */
+
+.swipe-area {
+  position: relative;
+  touch-action: pan-y;
+}
+
+.tab-page {
+  animation: tab-fade-in 0.25s ease;
+}
+
+@keyframes tab-fade-in {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .container {
@@ -84,6 +133,11 @@ body.tema-noche {
 
 .random-card {
   text-align: center;
+}
+
+.random-card h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.1rem;
 }
 
 .random-imagen-wrap img {
@@ -243,6 +297,10 @@ body.tema-noche {
   cursor: default;
 }
 
+.calendar-day.readonly {
+  cursor: default;
+}
+
 .calendar-day.verde {
   background-color: #4caf50;
   color: #fff;
@@ -283,23 +341,6 @@ body.tema-noche {
 
 .modal-content h3 {
   margin-top: 0;
-}
-
-.modal-content.modal-wide {
-  max-width: 640px;
-  max-height: 85vh;
-  overflow-y: auto;
-}
-
-.modal-content-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-}
-
-.modal-content-header h3 {
-  margin: 0;
 }
 
 .color-options {

@@ -15,6 +15,53 @@ function aplicarTema() {
   }
 }
 
+// ---- Pestanas (Resumen / Editar) ----
+
+let tabActual = 0;
+const TOTAL_TABS = 2;
+
+function cambiarTab(index) {
+  tabActual = Math.max(0, Math.min(TOTAL_TABS - 1, index));
+  document.querySelectorAll(".tab-page").forEach((page) => {
+    page.hidden = Number(page.dataset.page) !== tabActual;
+  });
+  document.querySelectorAll(".tab-btn").forEach((btn) => {
+    btn.classList.toggle("active", Number(btn.dataset.tab) === tabActual);
+  });
+}
+
+function inicializarSwipe() {
+  const area = document.getElementById("swipe-area");
+  let startX = 0;
+  let startY = 0;
+  let tracking = false;
+
+  area.addEventListener("touchstart", (e) => {
+    if (e.touches.length !== 1) return;
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    tracking = true;
+  });
+
+  area.addEventListener("touchend", (e) => {
+    if (!tracking) return;
+    tracking = false;
+    const endX = e.changedTouches[0].clientX;
+    const endY = e.changedTouches[0].clientY;
+    const deltaX = endX - startX;
+    const deltaY = endY - startY;
+
+    const UMBRAL = 50;
+    if (Math.abs(deltaX) > UMBRAL && Math.abs(deltaX) > Math.abs(deltaY)) {
+      if (deltaX < 0) {
+        cambiarTab(tabActual + 1);
+      } else {
+        cambiarTab(tabActual - 1);
+      }
+    }
+  });
+}
+
 // ---- Contenido aleatorio ----
 
 async function cargarRandom() {
@@ -43,7 +90,35 @@ let editandoGoalId = null;
 async function cargarGoals() {
   const res = await fetch(`${API}/goals`);
   const goals = await res.json();
-  const lista = document.getElementById("goals-list");
+  renderGoalsResumen(goals);
+  renderGoalsEditar(goals);
+}
+
+function renderGoalsResumen(goals) {
+  const lista = document.getElementById("goals-list-resumen");
+  lista.innerHTML = "";
+  if (goals.length === 0) {
+    lista.innerHTML = "<p>No hay metas todavia.</p>";
+    return;
+  }
+  goals.forEach((g) => {
+    const item = document.createElement("div");
+    item.className = "goal-item";
+    item.innerHTML = `
+      <div class="goal-item-top">
+        <span class="goal-titulo">${escapeHtml(g.titulo)}</span>
+        <span class="goal-categoria">${escapeHtml(g.categoria)}</span>
+      </div>
+      <div class="goal-progreso-bar">
+        <div class="goal-progreso-fill" style="width:${g.progreso}%"></div>
+      </div>
+    `;
+    lista.appendChild(item);
+  });
+}
+
+function renderGoalsEditar(goals) {
+  const lista = document.getElementById("goals-list-editar");
   lista.innerHTML = "";
   if (goals.length === 0) {
     lista.innerHTML = "<p>No hay metas todavia. Crea la primera.</p>";
@@ -147,10 +222,14 @@ async function cargarCalendario() {
 }
 
 function renderCalendario() {
-  document.getElementById("calendar-titulo").textContent =
-    `${NOMBRES_MES[mesActual]} ${anioActual}`;
+  renderCalendarioEn("calendar-grid-resumen", "calendar-titulo-resumen", false);
+  renderCalendarioEn("calendar-grid-editar", "calendar-titulo-editar", true);
+}
 
-  const grid = document.getElementById("calendar-grid");
+function renderCalendarioEn(gridId, tituloId, interactivo) {
+  document.getElementById(tituloId).textContent = `${NOMBRES_MES[mesActual]} ${anioActual}`;
+
+  const grid = document.getElementById(gridId);
   grid.innerHTML = "";
 
   ["Lu", "Ma", "Mi", "Ju", "Vi", "Sa", "Do"].forEach((d) => {
@@ -176,10 +255,14 @@ function renderCalendario() {
     const info = calendarioData[fecha];
     const celda = document.createElement("button");
     celda.type = "button";
-    celda.className = "calendar-day" + (info ? ` ${info.color}` : "");
+    celda.className = "calendar-day" + (info ? ` ${info.color}` : "") + (interactivo ? "" : " readonly");
     celda.textContent = dia;
     celda.title = info && info.nota ? info.nota : "";
-    celda.addEventListener("click", () => abrirModalDia(fecha, info));
+    if (interactivo) {
+      celda.addEventListener("click", () => abrirModalDia(fecha, info));
+    } else {
+      celda.disabled = true;
+    }
     grid.appendChild(celda);
   }
 }
@@ -320,15 +403,6 @@ async function eliminarImagen(id) {
   cargarMotivacion();
 }
 
-function abrirMotivacion() {
-  document.getElementById("motivacion-modal").hidden = false;
-  cargarMotivacion();
-}
-
-function cerrarMotivacion() {
-  document.getElementById("motivacion-modal").hidden = true;
-}
-
 function escapeHtml(str) {
   const div = document.createElement("div");
   div.textContent = str;
@@ -339,9 +413,17 @@ function escapeHtml(str) {
 
 document.addEventListener("DOMContentLoaded", () => {
   aplicarTema();
+  cambiarTab(0);
+  inicializarSwipe();
+
   cargarRandom();
   cargarGoals();
   cargarCalendario();
+  cargarMotivacion();
+
+  document.querySelectorAll(".tab-btn").forEach((btn) => {
+    btn.addEventListener("click", () => cambiarTab(Number(btn.dataset.tab)));
+  });
 
   document.getElementById("btn-nueva-meta").addEventListener("click", () => abrirFormMeta(null));
   document.getElementById("btn-cancelar-meta").addEventListener("click", cerrarFormMeta);
@@ -350,13 +432,15 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("goal-progreso-valor").textContent = e.target.value;
   });
 
-  document.getElementById("btn-mes-anterior").addEventListener("click", () => cambiarMes(-1));
-  document.getElementById("btn-mes-siguiente").addEventListener("click", () => cambiarMes(1));
+  document.querySelectorAll(".btn-mes-anterior").forEach((btn) => {
+    btn.addEventListener("click", () => cambiarMes(-1));
+  });
+  document.querySelectorAll(".btn-mes-siguiente").forEach((btn) => {
+    btn.addEventListener("click", () => cambiarMes(1));
+  });
   document.getElementById("dia-form").addEventListener("submit", guardarDia);
   document.getElementById("btn-cerrar-modal").addEventListener("click", cerrarModalDia);
 
-  document.getElementById("btn-abrir-motivacion").addEventListener("click", abrirMotivacion);
-  document.getElementById("btn-cerrar-motivacion").addEventListener("click", cerrarMotivacion);
   document.getElementById("nota-form").addEventListener("submit", agregarNota);
   document.getElementById("imagen-form").addEventListener("submit", agregarImagen);
 });

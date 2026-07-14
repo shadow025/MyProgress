@@ -9,50 +9,119 @@
 <body>
   <header class="topbar">
     <h1>MyProgress</h1>
+    <nav class="tabs-nav">
+      <button type="button" class="tab-btn active" data-tab="0">Resumen</button>
+      <button type="button" class="tab-btn" data-tab="1">Editar</button>
+    </nav>
   </header>
 
-  <main class="container">
+  <main id="swipe-area" class="swipe-area">
 
-    <section id="random-content" class="card random-card">
-      <div class="card-header">
-        <h2>Motivacion del momento</h2>
-        <button id="btn-abrir-motivacion" class="btn-secondary">Mi motivacion</button>
+    <section class="tab-page" data-page="0">
+      <div class="container">
+
+        <section id="random-content" class="card random-card">
+          <h2>Motivacion del momento</h2>
+          <div id="random-imagen-wrap" class="random-imagen-wrap" hidden>
+            <img id="random-imagen" alt="Imagen motivacional">
+          </div>
+          <p id="random-nota" class="random-nota">Cargando...</p>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <h2>Metas activas</h2>
+          </div>
+          <div id="goals-list-resumen" class="goals-list"></div>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <h2 id="calendar-titulo-resumen">Calendario</h2>
+            <div class="calendar-nav">
+              <button type="button" class="btn-secondary btn-mes-anterior">&lt;</button>
+              <button type="button" class="btn-secondary btn-mes-siguiente">&gt;</button>
+            </div>
+          </div>
+          <div id="calendar-grid-resumen" class="calendar-grid"></div>
+        </section>
+
       </div>
-      <div id="random-imagen-wrap" class="random-imagen-wrap" hidden>
-        <img id="random-imagen" alt="Imagen motivacional">
-      </div>
-      <p id="random-nota" class="random-nota">Cargando...</p>
     </section>
 
-    <section class="card">
-      <div class="card-header">
-        <h2>Metas activas</h2>
-        <button id="btn-nueva-meta" class="btn-secondary">+ Nueva meta</button>
-      </div>
-      <div id="goals-list" class="goals-list"></div>
+    <section class="tab-page" data-page="1" hidden>
+      <div class="container">
 
-      <form id="goal-form" class="goal-form" hidden>
-        <input type="hidden" id="goal-id">
-        <input type="text" id="goal-titulo" placeholder="Titulo de la meta" required>
-        <input type="text" id="goal-categoria" placeholder="Categoria (ej: personal, ecommerce)" required>
-        <label for="goal-progreso">Progreso: <span id="goal-progreso-valor">0</span>%</label>
-        <input type="range" id="goal-progreso" min="0" max="100" value="0">
-        <div class="form-actions">
-          <button type="submit" class="btn-primary">Guardar</button>
-          <button type="button" id="btn-cancelar-meta" class="btn-secondary">Cancelar</button>
-        </div>
-      </form>
-    </section>
+        <section class="card">
+          <div class="card-header">
+            <h2>Metas</h2>
+            <button id="btn-nueva-meta" type="button" class="btn-secondary">+ Nueva meta</button>
+          </div>
+          <div id="goals-list-editar" class="goals-list"></div>
 
-    <section class="card">
-      <div class="card-header">
-        <h2 id="calendar-titulo">Calendario</h2>
-        <div class="calendar-nav">
-          <button id="btn-mes-anterior" class="btn-secondary">&lt;</button>
-          <button id="btn-mes-siguiente" class="btn-secondary">&gt;</button>
-        </div>
+          <form id="goal-form" class="goal-form" hidden>
+            <input type="hidden" id="goal-id">
+            <input type="text" id="goal-titulo" placeholder="Titulo de la meta" required>
+            <input type="text" id="goal-categoria" placeholder="Categoria (ej: personal, ecommerce)" required>
+            <label for="goal-progreso">Progreso: <span id="goal-progreso-valor">0</span>%</label>
+            <input type="range" id="goal-progreso" min="0" max="100" value="0">
+            <div class="form-actions">
+              <button type="submit" class="btn-primary">Guardar</button>
+              <button type="button" id="btn-cancelar-meta" class="btn-secondary">Cancelar</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <h2 id="calendar-titulo-editar">Calendario</h2>
+            <div class="calendar-nav">
+              <button type="button" class="btn-secondary btn-mes-anterior">&lt;</button>
+              <button type="button" class="btn-secondary btn-mes-siguiente">&gt;</button>
+            </div>
+          </div>
+          <div id="calendar-grid-editar" class="calendar-grid"></div>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <h2>Mi motivacion</h2>
+          </div>
+
+          <div class="motivacion-forms">
+            <form id="nota-form" class="motivacion-form">
+              <input type="text" id="nota-texto" placeholder="Nueva frase motivacional" required>
+              <select id="nota-franja">
+                <option value="">Cualquier hora</option>
+                <option value="manana">Manana</option>
+                <option value="noche">Noche</option>
+              </select>
+              <button type="submit" class="btn-primary">Agregar frase</button>
+            </form>
+
+            <form id="imagen-form" class="motivacion-form">
+              <input type="file" id="imagen-file" accept="image/*" required>
+              <select id="imagen-franja">
+                <option value="">Cualquier hora</option>
+                <option value="manana">Manana</option>
+                <option value="noche">Noche</option>
+              </select>
+              <button type="submit" class="btn-primary">Subir imagen</button>
+            </form>
+          </div>
+
+          <div class="motivacion-seccion">
+            <h4>Frases</h4>
+            <div id="notas-grid" class="motivacion-grid"></div>
+          </div>
+
+          <div class="motivacion-seccion">
+            <h4>Imagenes</h4>
+            <div id="imagenes-grid" class="motivacion-grid"></div>
+          </div>
+        </section>
+
       </div>
-      <div id="calendar-grid" class="calendar-grid"></div>
     </section>
 
   </main>
@@ -72,47 +141,6 @@
           <button type="button" id="btn-cerrar-modal" class="btn-secondary">Cerrar</button>
         </div>
       </form>
-    </div>
-  </div>
-
-  <div id="motivacion-modal" class="modal" hidden>
-    <div class="modal-content modal-wide">
-      <div class="modal-content-header">
-        <h3>Mi motivacion</h3>
-        <button type="button" id="btn-cerrar-motivacion" class="btn-secondary">Cerrar</button>
-      </div>
-
-      <div class="motivacion-forms">
-        <form id="nota-form" class="motivacion-form">
-          <input type="text" id="nota-texto" placeholder="Nueva frase motivacional" required>
-          <select id="nota-franja">
-            <option value="">Cualquier hora</option>
-            <option value="manana">Manana</option>
-            <option value="noche">Noche</option>
-          </select>
-          <button type="submit" class="btn-primary">Agregar frase</button>
-        </form>
-
-        <form id="imagen-form" class="motivacion-form">
-          <input type="file" id="imagen-file" accept="image/*" required>
-          <select id="imagen-franja">
-            <option value="">Cualquier hora</option>
-            <option value="manana">Manana</option>
-            <option value="noche">Noche</option>
-          </select>
-          <button type="submit" class="btn-primary">Subir imagen</button>
-        </form>
-      </div>
-
-      <div class="motivacion-seccion">
-        <h4>Frases</h4>
-        <div id="notas-grid" class="motivacion-grid"></div>
-      </div>
-
-      <div class="motivacion-seccion">
-        <h4>Imagenes</h4>
-        <div id="imagenes-grid" class="motivacion-grid"></div>
-      </div>
     </div>
   </div>
 
