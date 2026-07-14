@@ -1,0 +1,14 @@
+{
+  "2026-07-10": {
+    "color": "verde",
+    "nota": "Buen dia, avance en la tienda y entrene."
+  },
+  "2026-07-11": {
+    "color": "amarillo",
+    "nota": "Dia flojo, solo cumpli con lo minimo."
+  },
+  "2026-07-12": {
+    "color": "rojo",
+    "nota": "No pude avanzar en nada, dia complicado."
+  }
+}

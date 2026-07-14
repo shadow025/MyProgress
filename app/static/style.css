@@ -1,0 +1,434 @@
+* {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  min-height: 100vh;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* ---- Paletas por hora del dia ---- */
+
+body.tema-manana {
+  background-color: #fff8e7;
+  color: #2b2b2b;
+  --accent: #ff9d3d;
+  --accent-dark: #e07b00;
+  --card-bg: #ffffff;
+  --border: #ffe0a3;
+}
+
+body.tema-tarde {
+  background-color: #f2f4f7;
+  color: #24303d;
+  --accent: #3d7bff;
+  --accent-dark: #1b52c9;
+  --card-bg: #ffffff;
+  --border: #dbe2ec;
+}
+
+body.tema-noche {
+  background-color: #10131a;
+  color: #e6e8ee;
+  --accent: #8b7bff;
+  --accent-dark: #6a58e0;
+  --card-bg: #1b1f2a;
+  --border: #2b3040;
+}
+
+.topbar {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.card-header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+/* ---- Contenido random ---- */
+
+.random-card {
+  text-align: center;
+}
+
+.random-imagen-wrap img {
+  max-width: 100%;
+  max-height: 260px;
+  border-radius: 10px;
+  margin-bottom: 0.75rem;
+}
+
+.random-nota {
+  font-style: italic;
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+/* ---- Metas ---- */
+
+.goals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.goal-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.goal-item-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.goal-titulo {
+  font-weight: 600;
+}
+
+.goal-categoria {
+  font-size: 0.75rem;
+  opacity: 0.65;
+  text-transform: uppercase;
+}
+
+.goal-progreso-bar {
+  height: 10px;
+  border-radius: 999px;
+  background-color: var(--border);
+  overflow: hidden;
+}
+
+.goal-progreso-fill {
+  height: 100%;
+  background-color: var(--accent);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.goal-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.15rem;
+}
+
+.goal-actions button {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+}
+
+.goal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.goal-form input[type="text"],
+.goal-form textarea,
+#dia-nota {
+  padding: 0.5rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+}
+
+/* ---- Botones ---- */
+
+.btn-primary, .btn-secondary {
+  border: none;
+  border-radius: 8px;
+  padding: 0.45rem 0.9rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-family: inherit;
+}
+
+.btn-primary {
+  background-color: var(--accent);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-dark);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border: 1px solid var(--border);
+  color: inherit;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* ---- Calendario ---- */
+
+.calendar-nav {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.calendar-day-label {
+  font-size: 0.7rem;
+  text-align: center;
+  opacity: 0.6;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: inherit;
+}
+
+.calendar-day.empty {
+  border: none;
+  cursor: default;
+}
+
+.calendar-day.verde {
+  background-color: #4caf50;
+  color: #fff;
+  border-color: #4caf50;
+}
+
+.calendar-day.amarillo {
+  background-color: #f2c94c;
+  color: #2b2b2b;
+  border-color: #f2c94c;
+}
+
+.calendar-day.rojo {
+  background-color: #eb5757;
+  color: #fff;
+  border-color: #eb5757;
+}
+
+/* ---- Modal ---- */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal-content {
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  padding: 1.25rem;
+  width: 100%;
+  max-width: 360px;
+}
+
+.modal-content h3 {
+  margin-top: 0;
+}
+
+.modal-content.modal-wide {
+  max-width: 640px;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.modal-content-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.modal-content-header h3 {
+  margin: 0;
+}
+
+.color-options {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.85rem;
+}
+
+#dia-nota {
+  width: 100%;
+  min-height: 80px;
+  margin-bottom: 0.75rem;
+  resize: vertical;
+}
+
+/* ---- Banco de motivacion ---- */
+
+.motivacion-forms {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.motivacion-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.motivacion-form input[type="text"],
+.motivacion-form select,
+.motivacion-form input[type="file"] {
+  padding: 0.45rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  font-size: 0.85rem;
+}
+
+.motivacion-form input[type="text"] {
+  flex: 1 1 200px;
+}
+
+.motivacion-seccion {
+  margin-bottom: 1.25rem;
+}
+
+.motivacion-seccion:last-child {
+  margin-bottom: 0;
+}
+
+.motivacion-seccion h4 {
+  margin: 0 0 0.6rem;
+  font-size: 0.9rem;
+  opacity: 0.75;
+}
+
+.motivacion-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+@media (max-width: 420px) {
+  .motivacion-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 640px) {
+  .motivacion-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .motivacion-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.motivacion-card {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  background: var(--card-bg);
+}
+
+.motivacion-card img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.motivacion-card-texto {
+  flex: 1;
+}
+
+.motivacion-badge {
+  align-self: flex-start;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  background-color: var(--border);
+  opacity: 0.85;
+}
+
+.motivacion-card-eliminar {
+  align-self: flex-end;
+  font-size: 0.7rem;
+  padding: 0.15rem 0.5rem;
+}
+
+.motivacion-vacio {
+  grid-column: 1 / -1;
+  font-size: 0.8rem;
+  opacity: 0.6;
+}

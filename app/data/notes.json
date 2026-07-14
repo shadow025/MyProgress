@@ -1,0 +1,17 @@
+[
+  {
+    "id": "1",
+    "texto": "Cada pequeno avance de hoy es el resultado grande de manana.",
+    "franja": "manana"
+  },
+  {
+    "id": "2",
+    "texto": "Descansa, manana sigues. Lo hiciste bien hoy.",
+    "franja": "noche"
+  },
+  {
+    "id": "3",
+    "texto": "La disciplina le gana a la motivacion.",
+    "franja": ""
+  }
+]
